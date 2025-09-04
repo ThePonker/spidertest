@@ -1,0 +1,12 @@
+{
+"type": "FeatureCollection",
+"name": "segment_centroids",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "record_ID": 1, "width_m": 2.5, "depth_m": 1.2, "invasives": "Himalayan balsam", "photo_ID": "215419281248974_photo.jpg", "photo_url": "images/215419281248974_photo.jpg" }, "geometry": { "type": "Point", "coordinates": [ 0.354148060434964, 50.830190959491304 ] } },
+{ "type": "Feature", "properties": { "record_ID": 2, "width_m": 3.1, "depth_m": 0.9, "invasives": "None", "photo_ID": "215419281248975_photo.jpg", "photo_url": "images/215419281248975_photo.jpg" }, "geometry": { "type": "Point", "coordinates": [ 0.354370754132979, 50.832365883146416 ] } },
+{ "type": "Feature", "properties": { "record_ID": 3, "width_m": 1.8, "depth_m": 1.5, "invasives": "Floating pennywort", "photo_ID": "215419281248976_photo.jpg", "photo_url": "images/215419281248976_photo.jpg" }, "geometry": { "type": "Point", "coordinates": [ 0.347861395347863, 50.82634666597238 ] } },
+{ "type": "Feature", "properties": { "record_ID": 4, "width_m": 2.9, "depth_m": 1.1, "invasives": "Himalayan balsam", "photo_ID": "215419281248977_photo.jpg", "photo_url": "images/215419281248977_photo.jpg" }, "geometry": { "type": "Point", "coordinates": [ 0.353304476260673, 50.831569922904016 ] } },
+{ "type": "Feature", "properties": { "record_ID": 5, "width_m": 2.2, "depth_m": 1.0, "invasives": "None", "photo_ID": "215419281248978_photo.jpg", "photo_url": "images/215419281248978_photo.jpg" }, "geometry": { "type": "Point", "coordinates": [ 0.35141745518893, 50.832050647840369 ] } }
+]
+}

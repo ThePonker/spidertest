@@ -1,0 +1,12 @@
+{
+"type": "FeatureCollection",
+"name": "spider_web_records",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "record_ID": 6, "webs": 12.0, "occupied": 8.0, "water_soldier": "Yes", "photo_ID": "85641753459821_photo.jpg", "photo_url": "images/85641753459821_photo.jpg" }, "geometry": { "type": "Point", "coordinates": [ 0.353077661108691, 50.834837707350964 ] } },
+{ "type": "Feature", "properties": { "record_ID": 7, "webs": 5.0, "occupied": 3.0, "water_soldier": "No", "photo_ID": "85641753459822_photo.jpg", "photo_url": "images/85641753459822_photo.jpg" }, "geometry": { "type": "Point", "coordinates": [ 0.352576725010294, 50.838124026176523 ] } },
+{ "type": "Feature", "properties": { "record_ID": 8, "webs": 18.0, "occupied": 15.0, "water_soldier": "Yes", "photo_ID": "85641753459823_photo.jpg", "photo_url": "images/85641753459823_photo.jpg" }, "geometry": { "type": "Point", "coordinates": [ 0.355523224333301, 50.833703205371279 ] } },
+{ "type": "Feature", "properties": { "record_ID": 9, "webs": 9.0, "occupied": 6.0, "water_soldier": "Yes", "photo_ID": "85641753459824_photo.jpg", "photo_url": "images/85641753459824_photo.jpg" }, "geometry": { "type": "Point", "coordinates": [ 0.350563831503969, 50.835465585950296 ] } },
+{ "type": "Feature", "properties": { "record_ID": 10, "webs": 25.0, "occupied": 20.0, "water_soldier": "No", "photo_ID": "85641753459825_photo.jpg", "photo_url": "images/85641753459825_photo.jpg" }, "geometry": { "type": "Point", "coordinates": [ 0.354685492839199, 50.831702620510477 ] } }
+]
+}

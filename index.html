@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fen Raft Spider Report</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Leaflet CSS for mapping -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        #map {
+            height: 600px; /* Adjust height as needed */
+            width: 100%;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-teal-600">Fen Raft Spider Report</h1>
+            <a href="#" class="text-gray-600 hover:text-teal-600 transition-colors hidden md:block">About this Project</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 md:py-12">
+        <section class="max-w-6xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Pevensey Levels Survey</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    An interactive map of the Fen Raft Spider (Dolomedes fimbriatus) survey results. Use the layers to explore ditch segments, habitat conditions, and spider web locations.
+                </p>
+            </div>
+            
+            <!-- Map Container -->
+            <div id="map" class="mb-8"></div>
+
+            <!-- Intro Text -->
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 mb-8">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-4">Project Overview</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    This report presents fieldwork data for the Fen Raft Spider survey on the Pevensey Levels. We've mapped out key habitat features and spider density to build a comprehensive picture of the species' distribution in the area. The data is divided into three key layers, which you can toggle on and off using the map controls.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-auto">
+        <div class="container mx-auto px-4 text-center text-sm">
+            <p>&copy; 2024 Fen Raft Spider Survey | Hosted on GitHub Pages</p>
+        </div>
+    </footer>
+
+    <!-- Leaflet JS & Map Script -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+             // Initialize map with a view of the general area of Pevensey Levels
+            var map = L.map('map').setView([50.83, 0.35], 13);
+            
+             // Add a base map layer from OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+             // --- Function to create pop-up with image ---
+            function createPopupContent(feature, type) {
+                let content = `<b>${type}</b><br>`;
+                for (const key in feature.properties) {
+                    if (key === 'photo_url') {
+                        content += `<img src="${feature.properties[key]}" alt="Field photo" class="rounded-lg mt-2 w-full">`;
+                    } else {
+                        content += `<b>${key.replace(/_/g, ' ')}</b>: ${feature.properties[key]}<br>`;
+                    }
+                }
+                return content;
+            }
+
+             // --- Fetch and load all GeoJSON data files from the GitHub repository ---
+            // The timestamp (?t=...) forces the browser to get the latest version.
+            const version = new Date().getTime(); // A unique timestamp
+            
+            Promise.all([
+                fetch(`ditch_segments.geojson?t=${version}`).then(response => response.json()),
+                fetch(`segment_centroids.geojson?t=${version}`).then(response => response.json()),
+                fetch(`spider_web_records.geojson?t=${version}`).then(response => response.json())
+            ])
+            .then(([ditchSegmentsData, centroidsData, spiderRecordsData]) => {
+                
+                 // --- Layers ---
+                 // Ditch Segments Layer
+                const ditchSegments = L.geoJSON(ditchSegmentsData, {
+                    style: { color: "#4f46e5", weight: 3 },
+                    onEachFeature(feature, layer) {
+                        layer.bindPopup(createPopupContent(feature, 'Ditch Segment'));
+                    }
+                });
+
+                 // Segment Centroids Layer
+                const centroids = L.geoJSON(centroidsData, {
+                    pointToLayer(feature, latlng) {
+                        return L.circleMarker(latlng, {
+                            radius: 8,
+                            fillColor: "#fde047",
+                            color: "#facc15",
+                            weight: 2,
+                            opacity: 1,
+                            fillOpacity: 0.8
+                        });
+                    },
+                    onEachFeature(feature, layer) {
+                    layer.bindPopup(
+                        createPopupContent(feature, 'Segment Info')
+                    );
+                }
+                });
+
+                 // Spider Web Records Layer
+                const spiderRecords = L.geoJSON(spiderRecordsData, {
+                    pointToLayer(feature, latlng) {
+                        const radius = (feature.properties.webs * 2) + 5; // Size based on web count
+                        return L.circleMarker(latlng, {
+                            radius: radius,
+                            fillColor: "#ef4444",
+                            color: "#dc2626",
+                            weight: 1,
+                            opacity: 1,
+                            fillOpacity: 0.7
+                        });
+                    },
+                    onEachFeature(feature, layer) {
+                        layer.bindPopup(createPopupContent(feature, 'Spider Web Record'));
+                    }
+                });
+
+                 // Add layers to the map by default
+                ditchSegments.addTo(map);
+                centroids.addTo(map);
+                spiderRecords.addTo(map);
+
+                 // Layer control to toggle layers
+                const overlayMaps = {
+                    "Ditch Segments": ditchSegments,
+                    "Segment Centroids": centroids,
+                    "Spider Web Records": spiderRecords
+                };
+
+                L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
+
+            })
+            .catch(error => console.error('Error fetching GeoJSON files', error));
+        });
+    </script>
+</body>
+</html>
